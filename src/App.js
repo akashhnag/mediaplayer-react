@@ -1,54 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import video from './video.webm';
-import { Row, Col } from 'react-bootstrap';
+import React, { Component } from 'react';
+//import './App.css';
+
+import { Row, Col, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ReactPlayer from 'react-player'
 
-function App() {
-  return (
-    <div className="App">
-      <Row>
-        <Col>
-          <ReactPlayer url={video} controls></ReactPlayer>
-        </Col>
+import ControlPanel from './components/ControlPanel';
+import View from './components/View';
+import FileUpload from './components/FileUpload';
+import NavbarComponent from './components/NavbarComponent';
 
+import { store } from './http/fileUpload';
 
-        <Col sm={6}>
-          <Row>
-            <div>
-              Start time:<input type='text' onChange={inputHandler} name='start'></input>{'  '}
-              End time:<input type='text' onChange={inputHandler} name='end'></input>
-            </div>
-          </Row>
-          <Row>
-            <button onClick={buttonAction}>Submit</button>
-          </Row>
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uploadStatus: false
+    }
+    store.subscribe(() => {
+      console.log(store.getState().uploaded);
 
-
-        </Col>
-      </Row>
-    </div>
-  );
-}
-
-function inputHandler(e) {
-  let name = e.target.name;
-  if (name === 'start') {
-    console.log(e.target.value);
-
-  }
-  else if (name === 'end') {
-    console.log(e.target.value);
+      this.setState(
+        { uploadStatus: store.getState().uploaded }
+      )
+    })
 
   }
 
-}
+  render() {
+    return (
+      <div className="App">
+        <Container fluid={true}>
+          <Row>
+            <Col>
+              <NavbarComponent></NavbarComponent>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={6}>
+              <div className='mt-3'>
+                <FileUpload></FileUpload><br></br>
+                {this.state.uploadStatus ? <div>
+                  <View></View><br></br>
 
-function buttonAction() {
-  console.log('button clicked');
+                </div> : null}
 
+
+              </div>
+
+            </Col>
+            <Col sm={6}>
+              <div>
+                <ControlPanel></ControlPanel>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+
+
+      </div >
+    );
+  }
 }
 
 export default App;
