@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import './App.css';
 
 import { Row, Col, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -42,13 +41,10 @@ class App extends Component {
                 <FileUpload></FileUpload><br></br>
                 {this.state.uploadStatus ? <div>
                   <View></View><br></br>
-
                 </div> : null}
-
-
               </div>
-
             </Col>
+
             <Col sm={6}>
               <div>
                 <ControlPanel></ControlPanel>
@@ -56,9 +52,7 @@ class App extends Component {
             </Col>
           </Row>
         </Container>
-
-
-      </div >
+      </div>
     );
   }
 }
